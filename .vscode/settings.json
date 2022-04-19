@@ -1,0 +1,9 @@
+{
+  "scm.diffDecorations": "none",
+  "workbench.statusBar.visible": false,
+  "editor.glyphMargin": false,
+  "workbench.activityBar.visible": false,
+  "scm.countBadge": "off",
+  "breadcrumbs.enabled": false,
+  "git.decorations.enabled": false,
+}
