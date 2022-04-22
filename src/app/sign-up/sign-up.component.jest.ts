@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/angular';
 import { SignUpComponent } from './sign-up.component';
 import userEvent from "@testing-library/user-event";
+import "whatwg-fetch";
 
 describe('SignUpComponent', () => {
   describe('Layout', () => {
@@ -52,7 +53,7 @@ describe('SignUpComponent', () => {
     });
   });
   describe('Interactions', () => {
-    it('enabels the button when the password and password repeat fields have same value', async () => {
+    it('enables the button when the password and password repeat fields have same value', async () => {
       await render(SignUpComponent);
       const password = screen.getByLabelText('Password');
       const passwordRepeat = screen.getByLabelText('Password Repeat');
@@ -60,6 +61,28 @@ describe('SignUpComponent', () => {
       await userEvent.type(passwordRepeat, "P4ssword");
       const button = screen.getByRole('button', { name: 'Sign Up' });
       expect(button).toBeEnabled();
+    })
+    it('sends username, email and password to backend after clicking the button', async () => {
+      const spy = jest.spyOn(window, 'fetch');
+      await render(SignUpComponent);
+      const username = screen.getByLabelText('Username');
+      const email = screen.getByLabelText('E-mail');
+      const password = screen.getByLabelText('Password');
+      const passwordRepeat = screen.getByLabelText('Password Repeat');
+      await userEvent.type(username, "user1");
+      await userEvent.type(email, "user1@mail.com");
+      await userEvent.type(password, "P4ssword");
+      await userEvent.type(passwordRepeat, "P4ssword");
+      const button = screen.getByRole('button', { name: 'Sign Up' });
+      await userEvent.click(button);
+      const args = spy.mock.calls[0]
+      const secondParam = args[1] as RequestInit;
+      expect(secondParam.body).toEqual(JSON.stringify({
+        username: "user1",
+        password: "P4ssword",
+        email: "user1@mail.com"
+      }))
+      
     })
   });
 });
