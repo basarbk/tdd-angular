@@ -6,4 +6,5 @@
   "scm.countBadge": "off",
   "breadcrumbs.enabled": false,
   "git.decorations.enabled": false,
+  "diffEditor.wordWrap": "on",
 }
