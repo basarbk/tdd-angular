@@ -6,34 +6,34 @@
     <div class="card-header text-center">
       <h1>Sign Up</h1>
     </div>
-    <form class="card-body" (submit)="onClickSignUp(); $event.preventDefault()">
+    <form 
+      class="card-body" 
+      (ngSubmit)="onClickSignUp()"
+      [formGroup]="form"
+      >
       <div class="mb-3">
         <label for="username" class="form-label">Username</label>
         <input id="username"
         class="form-control"
-        name="username"
-        [(ngModel)]="username"
+        formControlName="username"
         />
       </div>
       <div class="mb-3">
         <label for="email" class="form-label">E-mail</label>
         <input id="email" class="form-control"
-        name="email"
-        [(ngModel)]="email"
+        formControlName="email"
         />
       </div>
       <div class="mb-3">
         <label for="password" class="form-label">Password</label>
         <input id="password" class="form-control" type="password"
-        name="password"
-        [(ngModel)]="password"
+        formControlName="password"
         />
       </div>
       <div class="mb-3">
         <label for="passwordRepeat" class="form-label">Password Repeat</label>
         <input id="passwordRepeat" class="form-control" type="password"
-        name="passwordRepeat"
-        [(ngModel)]="passwordRepeat"
+        formControlName="passwordRepeat"
         />
       </div>
       <div class="text-center">
