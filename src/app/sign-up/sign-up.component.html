@@ -24,21 +24,18 @@
         <input id="passwordRepeat" class="form-control" type="password" (input)="onChangePasswordRepeat($event)"/>
       </div>
       <div class="text-center">
-        <button class="btn btn-primary"
-          [disabled]="isDisabled() || apiProgress"
-          >
-          <span 
-            *ngIf="apiProgress"
-            class="spinner-border spinner-border-sm"
-            role="status"></span>
+        <app-button
+          [disabled]="isDisabled()"
+          [apiProgress]="apiProgress"
+        >
           Sign Up
-        </button>
+        </app-button>
       </div>
     </form>
   </div>
 </div>
 <ng-template #successMessage>
-  <div class="alert alert-success">
+  <app-alert>
     Please check your e-mail to activate your account
-  </div>
+  </app-alert>
 </ng-template>
