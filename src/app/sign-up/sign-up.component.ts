@@ -1,5 +1,5 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { UserService } from '../core/user.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -15,7 +15,7 @@ export class SignUpComponent implements OnInit {
   apiProgress = false;
   signUpSuccess = false;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private userService: UserService) { }
 
   ngOnInit(): void {
   }
@@ -38,7 +38,7 @@ export class SignUpComponent implements OnInit {
 
   onClickSignUp(){
     this.apiProgress = true;
-    this.httpClient.post("/api/1.0/users", {
+    this.userService.signUp({
       username: this.username,
       email: this.email,
       password: this.password
