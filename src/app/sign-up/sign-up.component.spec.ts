@@ -3,6 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 
 import { SignUpComponent } from './sign-up.component';
 import { SharedModule } from '../shared/shared.module';
+import { FormsModule } from '@angular/forms';
 
 describe('SignUpComponent', () => {
   let component: SignUpComponent;
@@ -11,7 +12,7 @@ describe('SignUpComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ SignUpComponent ],
-      imports: [HttpClientTestingModule, SharedModule]
+      imports: [HttpClientTestingModule, SharedModule, FormsModule]
     })
     .compileComponents();
   });
@@ -95,10 +96,12 @@ describe('SignUpComponent', () => {
     let button : any;
     let httpTestingController : HttpTestingController;
     let signUp: HTMLElement;
-    const setupForm = () => {
+    const setupForm = async () => {
       httpTestingController = TestBed.inject(HttpTestingController);
 
       signUp = fixture.nativeElement as HTMLElement;
+
+      await fixture.whenStable();
       const usernameInput = signUp.querySelector('input[id="username"]') as HTMLInputElement;
       const emailInput = signUp.querySelector('input[id="email"]') as HTMLInputElement;
       const passwordInput = signUp.querySelector('input[id="password"]') as HTMLInputElement;
@@ -115,12 +118,12 @@ describe('SignUpComponent', () => {
       button = signUp.querySelector('button');
     }
 
-    it('enabels the button when the password and password repeat fields have same value', () => {
-      setupForm();
+    it('enabels the button when the password and password repeat fields have same value', async () => {
+      await setupForm();
       expect(button?.disabled).toBeFalsy();
     })
-    it('sends username, email and password to backend after clicking the button', () => {
-      setupForm();
+    it('sends username, email and password to backend after clicking the button', async () => {
+      await setupForm();
       button?.click();
       const req = httpTestingController.expectOne("/api/1.0/users");
       const requestBody = req.request.body;
@@ -130,23 +133,23 @@ describe('SignUpComponent', () => {
         email: "user1@mail.com"
       })
     })
-    it('disables button when there is an ongoing api call', () => {
-      setupForm();
+    it('disables button when there is an ongoing api call', async () => {
+      await setupForm();
       button.click();
       fixture.detectChanges();
       button.click();
       httpTestingController.expectOne("/api/1.0/users");
       expect(button.disabled).toBeTruthy();
     })
-    it('displays spinner after clicking the submit', () => {
-      setupForm();
+    it('displays spinner after clicking the submit', async () => {
+      await setupForm();
       expect(signUp.querySelector('span[role="status"]')).toBeFalsy();
       button.click();
       fixture.detectChanges();
       expect(signUp.querySelector('span[role="status"]')).toBeTruthy();
     })
-    it('displays account activation notification after successful sign up request', () => {
-      setupForm();
+    it('displays account activation notification after successful sign up request', async () => {
+      await setupForm();
       expect(signUp.querySelector('.alert-success')).toBeFalsy();
       button.click();
       const req = httpTestingController.expectOne("/api/1.0/users");
@@ -156,8 +159,8 @@ describe('SignUpComponent', () => {
       expect(message?.textContent)
       .toContain('Please check your e-mail to activate your account')
     }),
-    it('hides sign up form after successful sign up request', () => {
-      setupForm();
+    it('hides sign up form after successful sign up request', async () => {
+      await setupForm();
       expect(signUp.querySelector('div[data-testid="form-sign-up"]')).toBeTruthy();
       button.click();
       const req = httpTestingController.expectOne("/api/1.0/users");
