@@ -6,12 +6,18 @@ import { setupServer } from "msw/node";
 import { HttpClientModule } from '@angular/common/http';
 
 let requestBody: any;
+let counter = 0;
 const server = setupServer(
   rest.post('/api/1.0/users', (req, res, ctx) => {
     requestBody = req.body
+    counter += 1;
     return res(ctx.status(200), ctx.json({}))
   })
 );
+
+beforeEach(() => {
+  counter = 0;
+})
 
 beforeAll(() => server.listen() )
 
@@ -74,16 +80,8 @@ describe('SignUpComponent', () => {
     });
   });
   describe('Interactions', () => {
-    it('enables the button when the password and password repeat fields have same value', async () => {
-      await setup();
-      const password = screen.getByLabelText('Password');
-      const passwordRepeat = screen.getByLabelText('Password Repeat');
-      await userEvent.type(password, "P4ssword");
-      await userEvent.type(passwordRepeat, "P4ssword");
-      const button = screen.getByRole('button', { name: 'Sign Up' });
-      expect(button).toBeEnabled();
-    })
-    it('sends username, email and password to backend after clicking the button', async () => {
+    let button: any;
+    const setupForm = async () => {
       await setup();
       const username = screen.getByLabelText('Username');
       const email = screen.getByLabelText('E-mail');
@@ -93,7 +91,14 @@ describe('SignUpComponent', () => {
       await userEvent.type(email, "user1@mail.com");
       await userEvent.type(password, "P4ssword");
       await userEvent.type(passwordRepeat, "P4ssword");
-      const button = screen.getByRole('button', { name: 'Sign Up' });
+      button = screen.getByRole('button', { name: 'Sign Up' });
+    }
+    it('enables the button when the password and password repeat fields have same value', async () => {
+      await setupForm();
+      expect(button).toBeEnabled();
+    })
+    it('sends username, email and password to backend after clicking the button', async () => {
+      await setupForm();
       await userEvent.click(button);
 
       await waitFor(() => {
@@ -103,6 +108,20 @@ describe('SignUpComponent', () => {
           email: "user1@mail.com"
         })
       })
+    })
+    it('disables button when there is an ongoing api call', async () => {
+      await setupForm();
+      await userEvent.click(button);
+      await userEvent.click(button);
+      await waitFor(() => {
+        expect(counter).toBe(1);
+      })
+    })
+    it('displays spinner after clicking the submit', async () => {
+      await setupForm();
+      expect(screen.queryByRole("status")).not.toBeInTheDocument();
+      await userEvent.click(button);
+      expect(screen.queryByRole("status")).toBeInTheDocument();
     })
   });
 });
