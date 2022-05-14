@@ -151,7 +151,12 @@ describe('SignUpComponent', () => {
       ${'Username'} | ${'{space}{backspace}'} | ${'Username is required'}
       ${'Username'} | ${'123'}                | ${'Username must be at least 4 characters long'}
       ${'E-mail'}   | ${'{space}{backspace}'} | ${'E-mail is required'}
+      ${'E-mail'}   | ${'wrong-format'}       | ${'Invalid e-mail address'}
       ${'Password'} | ${'{space}{backspace}'} | ${'Password is required'}
+      ${'Password'} | ${'password'}           | ${'Password must have at least 1 uppercase, 1 lowecase letter and 1 number'}
+      ${'Password'} | ${'passWORD'}           | ${'Password must have at least 1 uppercase, 1 lowecase letter and 1 number'}
+      ${'Password'} | ${'pass1234'}           | ${'Password must have at least 1 uppercase, 1 lowecase letter and 1 number'}
+      ${'Password'} | ${'PASS1234'}           | ${'Password must have at least 1 uppercase, 1 lowecase letter and 1 number'}
     `(
       'displays $message when $label has the value "$inputValue"',
       async ({ label, inputValue, message }) => {
