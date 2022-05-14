@@ -7,4 +7,5 @@
   "breadcrumbs.enabled": false,
   "git.decorations.enabled": false,
   "diffEditor.wordWrap": "on",
+  "window.zoomLevel": 3,
 }
