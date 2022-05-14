@@ -27,14 +27,28 @@
       <div class="mb-3">
         <label for="email" class="form-label">E-mail</label>
         <input id="email" class="form-control"
+        [ngClass]="emailError ? 'is-invalid' : '' "
         formControlName="email"
         />
+        <div data-testid="email-validation"
+        class="invalid-feedback"
+          *ngIf="emailError">
+          {{emailError}}
+        </div>
       </div>
       <div class="mb-3">
         <label for="password" class="form-label">Password</label>
-        <input id="password" class="form-control" type="password"
+        <input id="password" 
+        class="form-control"
+        [ngClass]="passwordError ? 'is-invalid' : '' "
+        type="password"
         formControlName="password"
         />
+        <div data-testid="password-validation"
+        class="invalid-feedback"
+          *ngIf="passwordError">
+          {{passwordError}}
+        </div>
       </div>
       <div class="mb-3">
         <label for="passwordRepeat" class="form-label">Password Repeat</label>
