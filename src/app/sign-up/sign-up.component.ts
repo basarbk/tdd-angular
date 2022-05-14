@@ -24,6 +24,18 @@ export class SignUpComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  get usernameError() {
+    const field = this.form.get('username');
+    if((field?.errors && (field?.touched || field?.dirty))) {
+      if(field.errors['required']) {
+        return "Username is required";
+      } else {
+        return "Username must be at least 4 characters long"
+      }
+    }
+    return;
+  }
+
   onClickSignUp(){
     const body = this.form.value;
     delete body.passwordRepeat;
