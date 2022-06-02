@@ -52,9 +52,17 @@
       </div>
       <div class="mb-3">
         <label for="passwordRepeat" class="form-label">Password Repeat</label>
-        <input id="passwordRepeat" class="form-control" type="password"
+        <input id="passwordRepeat"
+        class="form-control"
+        [ngClass]="passwordRepeatError ? 'is-invalid' : '' "
+        type="password"
         formControlName="passwordRepeat"
         />
+        <div data-testid="passwordRepeat-validation"
+        class="invalid-feedback"
+          *ngIf="passwordRepeatError">
+          {{passwordRepeatError}}
+        </div>
       </div>
       <div class="text-center">
         <app-button
