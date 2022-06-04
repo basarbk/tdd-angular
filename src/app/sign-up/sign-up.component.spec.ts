@@ -170,6 +170,21 @@ describe('SignUpComponent', () => {
       fixture.detectChanges();
       expect(signUp.querySelector('div[data-testid="form-sign-up"]')).toBeFalsy();
     })
+    it('displays validation error coming from backend after submit failure', async () => {
+      await setupForm();
+      button.click();
+      const req = httpTestingController.expectOne("/api/1.0/users");
+      req.flush({
+        validationErrors: { email: 'E-mail in use'}
+      }, {
+        status: 400,
+        statusText: 'Bad Request'
+      });
+      fixture.detectChanges();
+      const validationElement = signUp.querySelector(`div[data-testid="email-validation"]`);
+      expect(validationElement?.textContent).toContain("E-mail in use");
+
+    })
   })
   describe('Validation', () => {
 
