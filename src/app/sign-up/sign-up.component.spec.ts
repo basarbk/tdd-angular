@@ -119,7 +119,7 @@ describe('SignUpComponent', () => {
       button = signUp.querySelector('button');
     }
 
-    it('enabels the button when the password and password repeat fields have same value', async () => {
+    it('enables the button when all the fields have valid input', async () => {
       await setupForm();
       expect(button?.disabled).toBeFalsy();
     })

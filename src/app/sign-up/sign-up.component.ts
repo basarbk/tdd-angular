@@ -101,7 +101,14 @@ export class SignUpComponent implements OnInit {
   }
 
   isDisabled(){
-    return this.form.get('password')?.value ?
-     (this.form.get('password')?.value !== this.form.get('passwordRepeat')?.value) : true
+    const formFilled = this.form.get('username')?.value
+        && this.form.get('email')?.value
+        && this.form.get('password')?.value
+        && this.form.get('passwordRepeat')?.value
+
+    const validationError = this.usernameError || this.emailError
+    || this.passwordError || this.passwordRepeatError;
+
+    return !formFilled || validationError ? true : false;
   }
 }
