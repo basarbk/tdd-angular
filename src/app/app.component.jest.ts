@@ -7,10 +7,19 @@ import { routes } from './router/app-router.module';
 import { SharedModule } from './shared/shared.module';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import userEvent from '@testing-library/user-event';
+import { UserComponent } from './user/user.component';
+import { LoginComponent } from './login/login.component';
+import { ActivateComponent } from './activate/activate.component';
 
 const setup = async (path: string) => {
   const { navigate } = await render(AppComponent, {
-    declarations: [HomeComponent, SignUpComponent],
+    declarations: [
+      HomeComponent,
+      SignUpComponent,
+      UserComponent,
+      LoginComponent,
+      ActivateComponent,
+    ],
     imports: [HttpClientModule, SharedModule, ReactiveFormsModule],
     routes: routes,
   });
@@ -19,12 +28,14 @@ const setup = async (path: string) => {
 
 describe('Routing', () => {
   it.each`
-    path         | pageId
-    ${'/'}       | ${'home-page'}
-    ${'/signup'} | ${'sign-up-page'}
-    ${'/login'}  | ${'login-page'}
-    ${'/user/1'} | ${'user-page'}
-    ${'/user/2'} | ${'user-page'}
+    path               | pageId
+    ${'/'}             | ${'home-page'}
+    ${'/signup'}       | ${'sign-up-page'}
+    ${'/login'}        | ${'login-page'}
+    ${'/user/1'}       | ${'user-page'}
+    ${'/user/2'}       | ${'user-page'}
+    ${'/activate/123'} | ${'activation-page'}
+    ${'/activate/456'} | ${'activation-page'}
   `('displays $pageId when path is $path', async ({ path, pageId }) => {
     await setup(path);
     const page = screen.queryByTestId(pageId);
@@ -43,16 +54,18 @@ describe('Routing', () => {
   });
 
   it.each`
-  initialPath | clickingTo | visiblePage
-  ${'/'}      | ${'Sign Up'} | ${'sign-up-page'}
-  ${'/signup'}      | ${'Home'} | ${'home-page'}
-  ${'/'}      | ${'Login'} | ${'login-page'}
-  `('displays $visiblePage after clicking $clickingTo link', async (
-    { initialPath, clickingTo, visiblePage}) => {
+    initialPath  | clickingTo   | visiblePage
+    ${'/'}       | ${'Sign Up'} | ${'sign-up-page'}
+    ${'/signup'} | ${'Home'}    | ${'home-page'}
+    ${'/'}       | ${'Login'}   | ${'login-page'}
+  `(
+    'displays $visiblePage after clicking $clickingTo link',
+    async ({ initialPath, clickingTo, visiblePage }) => {
       await setup(initialPath);
       const link = screen.getByRole('link', { name: clickingTo });
       await userEvent.click(link);
       const page = await screen.findByTestId(visiblePage);
       expect(page).toBeInTheDocument();
-  })
+    }
+  );
 });

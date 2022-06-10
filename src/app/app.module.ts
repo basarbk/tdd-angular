@@ -10,6 +10,7 @@ import { AppRouterModule } from './router/app-router.module';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { UserComponent } from './user/user.component';
+import { ActivateComponent } from './activate/activate.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { UserComponent } from './user/user.component';
     SignUpComponent,
     HomeComponent,
     LoginComponent,
-    UserComponent
+    UserComponent,
+    ActivateComponent
   ],
   imports: [
     BrowserModule,
