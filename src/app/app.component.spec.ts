@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { SharedModule } from './shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { LoginComponent } from './login/login.component';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -17,7 +18,7 @@ describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
-        AppComponent, SignUpComponent, HomeComponent
+        AppComponent, SignUpComponent, HomeComponent, LoginComponent
       ],
       imports: [
         RouterTestingModule.withRoutes(routes),
@@ -35,17 +36,21 @@ describe('AppComponent', () => {
   });
   
   describe('Routing', () => {
-    it('displays homepage at /', async () => {
-      await router.navigate(['/']);
-      fixture.detectChanges();
-      const page = fixture.nativeElement.querySelector('[data-testid="home-page"]');
-      expect(page).toBeTruthy();
-    })
-    it('displays sign up page at /signup', async () => {
-      await router.navigate(['/signup']);
-      fixture.detectChanges();
-      const page = fixture.nativeElement.querySelector('[data-testid="sign-up-page"]');
-      expect(page).toBeTruthy();
+
+    const testCases = [
+      { path: '/', pageId: 'home-page'},
+      { path: '/signup', pageId: 'sign-up-page'},
+      { path: '/login', pageId: 'login-page'},
+      { path: '/user/1', pageId: 'user-page'},
+      { path: '/user/2', pageId: 'user-page'},
+    ]
+    testCases.forEach(({ path, pageId}) => {
+      it(`displays ${pageId} when path is ${path}`, async () => {
+        await router.navigate([path]);
+        fixture.detectChanges();
+        const page = fixture.nativeElement.querySelector(`[data-testid="${pageId}"]`);
+        expect(page).toBeTruthy();
+      })
     })
   })
 });

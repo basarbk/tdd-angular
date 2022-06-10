@@ -14,15 +14,18 @@ const setup = async (path: string) => {
     routes: routes,
   });
   await navigate(path);
-}
+};
 
 describe('Routing', () => {
   it.each`
     path         | pageId
     ${'/'}       | ${'home-page'}
     ${'/signup'} | ${'sign-up-page'}
+    ${'/login'}  | ${'login-page'}
+    ${'/user/1'} | ${'user-page'}
+    ${'/user/2'} | ${'user-page'}
   `('displays $pageId when path is $path', async ({ path, pageId }) => {
-    await setup(path)
+    await setup(path);
     const page = screen.queryByTestId(pageId);
     expect(page).toBeInTheDocument();
   });
