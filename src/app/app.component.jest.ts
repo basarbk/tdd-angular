@@ -10,6 +10,22 @@ import userEvent from '@testing-library/user-event';
 import { UserComponent } from './user/user.component';
 import { LoginComponent } from './login/login.component';
 import { ActivateComponent } from './activate/activate.component';
+import { setupServer } from 'msw/node';
+import { rest } from 'msw';
+
+const server = setupServer(
+  rest.post('/api/1.0/users/token/:token', (req, res, ctx) => {
+    return res(ctx.status(200))
+  })
+);
+
+beforeEach(() => {
+  server.resetHandlers();
+});
+
+beforeAll(() => server.listen());
+
+afterAll(() => server.close());
 
 const setup = async (path: string) => {
   const { navigate } = await render(AppComponent, {
