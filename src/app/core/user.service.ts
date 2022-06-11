@@ -15,4 +15,8 @@ export class UserService {
   isEmailTaken(value: string) {
     return this.httpClient.post('/api/1.0/user/email', {email: value})
   }
+
+  activate(token: string) {
+    return this.httpClient.post('/api/1.0/users/token/' + token, {});
+  }
 }
