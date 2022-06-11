@@ -62,4 +62,13 @@ describe('ActivateComponent', () => {
     const alert = fixture.nativeElement.querySelector('.alert');
     expect(alert.textContent).toContain('Activation failure');
   })
+  it('displays spinner during activation request', () => {
+    subscriber.next({id: '123'});
+    const request = httpTestingController.expectOne('/api/1.0/users/token/123')
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('span[role="status"]')).toBeTruthy();
+    request.flush({});
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('span[role="status"]')).toBeFalsy();
+  })
 });

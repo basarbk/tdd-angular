@@ -1,4 +1,8 @@
 <div data-testid="activation-page">
+  <span 
+  *ngIf="activationStatus === 'inProgress'"
+  class="spinner-border spinner-border-sm"
+  role="status"></span>
   <app-alert *ngIf="activationStatus === 'success'">
     Account is activated
   </app-alert>

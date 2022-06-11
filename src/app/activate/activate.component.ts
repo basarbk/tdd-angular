@@ -10,12 +10,13 @@ import { UserService } from '../core/user.service';
 })
 export class ActivateComponent implements OnInit {
 
-  activationStatus!: 'success' | 'fail';
+  activationStatus!: 'success' | 'fail' | 'inProgress';
 
   constructor(private route: ActivatedRoute, private userService: UserService) { }
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
+      this.activationStatus = 'inProgress'
       this.userService.activate(params['id']).subscribe({
         next: () => {
           this.activationStatus = 'success';
