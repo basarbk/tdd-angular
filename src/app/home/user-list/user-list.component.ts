@@ -19,9 +19,22 @@ export class UserListComponent implements OnInit {
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
-    this.userService.loadUsers().subscribe(responseBody => {
+    this.loadData();
+  }
+
+  loadData(pageNumber: number = 0){
+    this.userService.loadUsers(pageNumber).subscribe(responseBody => {
       this.page = responseBody as UserPage;
     })
+  }
+
+  get hasNextPage(){
+    const { page, totalPages } = this.page;
+    return totalPages > page + 1;
+  }
+
+  get hasPreviousPage(){
+    return this.page.page != 0;
   }
 
 }
