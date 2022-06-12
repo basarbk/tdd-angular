@@ -3,22 +3,19 @@ import { render, screen, waitFor } from '@testing-library/angular';
 import { UserListComponent } from './user-list.component';
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
-
-const page = {
-  content: [
-    { id: 1, username: 'user1', email: 'user1@mail.com' },
-    { id: 2, username: 'user2', email: 'user2@mail.com' },
-    { id: 3, username: 'user3', email: 'user3@mail.com' },
-  ],
-  page: 0,
-  size: 3,
-  totalPages: 6,
-};
-
+import { getPage } from './user-list.component.spec';
 
 const server = setupServer(
   rest.get('/api/1.0/users', (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(page))
+    let size = Number.parseInt(req.url.searchParams.get('size')!);
+    let page = Number.parseInt(req.url.searchParams.get('page')!);
+    if(Number.isNaN(size)) {
+      size = 5;
+    }
+    if(Number.isNaN(page)) {
+      page = 0;
+    }
+    return res(ctx.status(200), ctx.json(getPage(page, size)))
   })
   )
   

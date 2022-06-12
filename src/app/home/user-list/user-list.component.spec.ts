@@ -7,7 +7,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserListComponent } from './user-list.component';
 
-const getPage = (page: number, size: number) => {
+export const getPage = (page: number, size: number) => {
   let start = page * size;
   let end = start + size;
   return {
