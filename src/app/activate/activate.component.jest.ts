@@ -72,6 +72,13 @@ describe('Account Activation Page', () => {
     const message = await screen.findByText('Activation failure');
     expect(message).toBeInTheDocument();
   })
+  it('displays spinner during activation api call', async () => {
+    await setup();
+    subscriber.next({id: '456'});
+    const spinner = await screen.findByRole('status');
+    await screen.findByText('Activation failure');
+    expect(spinner).not.toBeInTheDocument();
+  })
 
 
 })
