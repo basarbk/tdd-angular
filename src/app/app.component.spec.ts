@@ -16,6 +16,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './login/login.component';
 import { ActivateComponent } from './activate/activate.component';
 import { UserComponent } from './user/user.component';
+import { UserListComponent } from './home/user-list/user-list.component';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -33,6 +34,7 @@ describe('AppComponent', () => {
         LoginComponent,
         UserComponent,
         ActivateComponent,
+        UserListComponent
       ],
       imports: [
         RouterTestingModule.withRoutes(routes),
