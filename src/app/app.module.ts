@@ -12,6 +12,7 @@ import { LoginComponent } from './login/login.component';
 import { UserComponent } from './user/user.component';
 import { ActivateComponent } from './activate/activate.component';
 import { UserListComponent } from './home/user-list/user-list.component';
+import { UserListItemComponent } from './home/user-list-item/user-list-item.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { UserListComponent } from './home/user-list/user-list.component';
     LoginComponent,
     UserComponent,
     ActivateComponent,
-    UserListComponent
+    UserListComponent,
+    UserListItemComponent
   ],
   imports: [
     BrowserModule,

@@ -5,6 +5,7 @@ import {
 } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { UserListItemComponent } from '../user-list-item/user-list-item.component';
 import { getPage } from './test-helper';
 
 import { UserListComponent } from './user-list.component';
@@ -32,7 +33,7 @@ describe('UserListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UserListComponent],
+      declarations: [UserListComponent, UserListItemComponent],
       imports: [HttpClientTestingModule, RouterTestingModule],
     }).compileComponents();
   });

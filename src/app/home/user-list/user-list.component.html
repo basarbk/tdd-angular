@@ -8,7 +8,7 @@
       *ngFor="let user of page.content"
       (click)="navigate(user.id)"
     >
-    {{ user.username }}
+    <app-user-list-item [user]="user"></app-user-list-item>
     </li>
   </ul>
   <div class="card-footer text-center">

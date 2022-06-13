@@ -13,6 +13,7 @@ import { ActivateComponent } from './activate/activate.component';
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 import { UserListComponent } from './home/user-list/user-list.component';
+import { UserListItemComponent } from './home/user-list-item/user-list-item.component';
 
 const server = setupServer(
   rest.post('/api/1.0/users/token/:token', (req, res, ctx) => {
@@ -46,7 +47,8 @@ const setup = async (path: string) => {
       UserComponent,
       LoginComponent,
       ActivateComponent,
-      UserListComponent
+      UserListComponent,
+      UserListItemComponent
     ],
     imports: [HttpClientModule, SharedModule, ReactiveFormsModule],
     routes: routes,

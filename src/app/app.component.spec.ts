@@ -18,6 +18,7 @@ import { ActivateComponent } from './activate/activate.component';
 import { UserComponent } from './user/user.component';
 import { UserListComponent } from './home/user-list/user-list.component';
 import { Location } from '@angular/common';
+import { UserListItemComponent } from './home/user-list-item/user-list-item.component';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -37,7 +38,8 @@ describe('AppComponent', () => {
         LoginComponent,
         UserComponent,
         ActivateComponent,
-        UserListComponent
+        UserListComponent,
+        UserListItemComponent
       ],
       imports: [
         RouterTestingModule.withRoutes(routes),
