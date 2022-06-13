@@ -16,7 +16,8 @@ const server = setupServer(
     if(Number.isNaN(page)) {
       page = 0;
     }
-    return res(ctx.status(200), ctx.json(getPage(page, size)))
+    return res(ctx.status(200)
+    , ctx.json(getPage(page, size)))
   })
   )
   
@@ -80,5 +81,11 @@ describe('User List', () => {
     await userEvent.click(screen.getByText('< previous'));
     const firstUserInFirstPage = await screen.findByText('user1');
     expect(firstUserInFirstPage).toBeInTheDocument();
+  })
+  it('displays spinner during the api call', async () => {
+    await setup();
+    const spinner = screen.getByRole('status')
+    await screen.findByText('user1');
+    expect(spinner).not.toBeInTheDocument();
   })
 })
