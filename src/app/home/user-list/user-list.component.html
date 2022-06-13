@@ -10,15 +10,24 @@
       {{ user.username }}
     </li>
   </ul>
-  <button
-    *ngIf="hasPreviousPage"
-    (click)="loadData(page.page - 1)"
-    data-testid="previous-button"
-  >
-    &lt; previous
-  </button>
-  <button *ngIf="hasNextPage" (click)="loadData(page.page + 1)"
-  data-testid="next-button">
-    next &gt;
-  </button>
+  <div class="card-footer text-center">
+    <button
+      *ngIf="hasPreviousPage && !fetchingData"
+      (click)="loadData(page.page - 1)"
+      data-testid="previous-button"
+      class="btn btn-outline-secondary btn-sm float-start"
+    >
+      &lt; previous
+    </button>
+    <button *ngIf="hasNextPage && !fetchingData"
+    (click)="loadData(page.page + 1)"
+    class="btn btn-outline-secondary btn-sm float-end"
+    data-testid="next-button">
+      next &gt;
+    </button>
+    <span 
+      *ngIf="fetchingData"
+      class="spinner-border spinner-border-sm"
+      role="status"></span>
+  </div>
 </div>
