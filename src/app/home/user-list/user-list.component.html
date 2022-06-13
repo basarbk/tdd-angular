@@ -6,8 +6,9 @@
     <li
       class="list-group-item list-grou-item-action"
       *ngFor="let user of page.content"
+      (click)="navigate(user.id)"
     >
-      {{ user.username }}
+    {{ user.username }}
     </li>
   </ul>
   <div class="card-footer text-center">
