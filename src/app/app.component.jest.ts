@@ -96,4 +96,12 @@ describe('Routing', () => {
       expect(page).toBeInTheDocument();
     }
   );
+
+  it('navigates to user page when clicking the username on user list', async () => {
+    await setup('/');
+    const userListItem = await screen.findByText('user1');
+    await userEvent.click(userListItem);
+    const page = await screen.findByTestId("user-page");
+    expect(page).toBeInTheDocument();
+  })
 });
