@@ -25,4 +25,8 @@ export class UserService {
       params: { size: 3, page}
     });
   }
+
+  getUserById(id: string) {
+    return this.httpClient.get('/api/1.0/users/'+id);
+  }
 }

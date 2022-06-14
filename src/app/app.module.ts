@@ -13,6 +13,7 @@ import { UserComponent } from './user/user.component';
 import { ActivateComponent } from './activate/activate.component';
 import { UserListComponent } from './home/user-list/user-list.component';
 import { UserListItemComponent } from './home/user-list-item/user-list-item.component';
+import { ProfileCardComponent } from './user/profile-card/profile-card.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { UserListItemComponent } from './home/user-list-item/user-list-item.comp
     UserComponent,
     ActivateComponent,
     UserListComponent,
-    UserListItemComponent
+    UserListItemComponent,
+    ProfileCardComponent
   ],
   imports: [
     BrowserModule,
