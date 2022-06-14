@@ -28,6 +28,14 @@ const server = setupServer(
       size: 3,
       totalPages: 1,
     }))
+  }),
+  rest.get('/api/1.0/users/:id', (req, res, ctx) => {
+    const id = Number(req.params['id']);
+    return res(ctx.status(200), ctx.json({
+      id,
+      username: `user${id}`,
+      email: `user${id}@mail.com`
+    }))
   })
 );
 
