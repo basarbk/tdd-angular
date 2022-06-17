@@ -29,4 +29,10 @@ export class UserService {
   getUserById(id: string) {
     return this.httpClient.get('/api/1.0/users/'+id);
   }
+
+  authenticate(email: string, password: string){
+    return this.httpClient.post('/api/1.0/auth', {
+      email, password
+    })
+  }
 }

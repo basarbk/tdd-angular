@@ -1,3 +1,42 @@
-<div data-testid="login-page">
-  <h1>Login Page</h1>
+<div 
+  class="col-lg-6 offset-lg-3 col-md-8 offset-md-2"
+  data-testid="login-page"
+  >
+  <div class="card" data-testid="form-sign-up">
+    <div class="card-header text-center">
+      <h1>Login</h1>
+    </div>
+    <form 
+      class="card-body"
+      (ngSubmit)="onClickLogin()"
+      >
+      <div class="mb-3">
+        <label for="email" class="form-label">E-mail</label>
+        <input id="email"
+        class="form-control"
+        [(ngModel)]="email"
+        name="email"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input id="password" 
+        class="form-control" 
+        type="password"
+        [(ngModel)]="password"
+        name="password"
+        />
+      </div>
+      <app-alert *ngIf="error" type="danger">{{error}}</app-alert>
+      <div class="text-center">
+        <app-button
+          [disabled]="isDisabled() || apiProgress"
+          [apiProgress]="apiProgress"
+        >
+          Login
+        </app-button>
+      </div>
+    </form>
+  </div>
 </div>
+

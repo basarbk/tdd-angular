@@ -101,7 +101,6 @@ describe('SignUpComponent', () => {
 
       signUp = fixture.nativeElement as HTMLElement;
 
-      await fixture.whenStable();
       const usernameInput = signUp.querySelector('input[id="username"]') as HTMLInputElement;
       const emailInput = signUp.querySelector('input[id="email"]') as HTMLInputElement;
       const passwordInput = signUp.querySelector('input[id="password"]') as HTMLInputElement;
