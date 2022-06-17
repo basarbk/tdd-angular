@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { UserService } from '../core/user.service';
 
 @Component({
@@ -9,6 +10,9 @@ import { UserService } from '../core/user.service';
   ]
 })
 export class LoginComponent implements OnInit {
+
+  @ViewChild("emailInput") emailInput!: FormControl;
+  @ViewChild("passwordInput") passwordInput!: FormControl;
 
   email = '';
   password = '';
@@ -23,7 +27,9 @@ export class LoginComponent implements OnInit {
   }
 
   isDisabled(){
-    return !this.email || !this.password;
+    return !this.email || !this.password 
+    || this.isInvalid(this.emailInput)
+    || this.isInvalid(this.passwordInput)
   }
 
   onClickLogin(){
@@ -36,6 +42,11 @@ export class LoginComponent implements OnInit {
         this.apiProgress = false;
       }
     })
+  }
+
+  isInvalid(field: FormControl) {
+    const { invalid, dirty, touched } = field;
+    return invalid && (dirty || touched)
   }
 
 
