@@ -1,5 +1,5 @@
 import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { render, screen } from '@testing-library/angular';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -58,7 +58,7 @@ const setup = async (path: string) => {
       UserListComponent,
       UserListItemComponent
     ],
-    imports: [HttpClientModule, SharedModule, ReactiveFormsModule],
+    imports: [HttpClientModule, SharedModule, ReactiveFormsModule, FormsModule],
     routes: routes,
   });
   await navigate(path);
