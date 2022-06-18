@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../core/user.service';
 import { AuthenticationService } from '../../core/authentication.service';
 
 @Component({
@@ -10,15 +9,13 @@ import { AuthenticationService } from '../../core/authentication.service';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(readonly authenticationService: AuthenticationService,
-    private userService: UserService) { }
+  constructor(readonly authenticationService: AuthenticationService) { }
 
   ngOnInit(): void {
   }
 
   logout(){
-    this.authenticationService.logout();
-    this.userService.logout().subscribe(() => {})
+    this.authenticationService.logout()
   }
 
 }

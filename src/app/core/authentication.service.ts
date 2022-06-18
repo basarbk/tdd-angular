@@ -1,4 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { tap } from 'rxjs';
 import { LoggedInUser, User } from '../shared/types';
 
 @Injectable({
@@ -13,7 +15,7 @@ export class AuthenticationService {
     isLoggedIn: false
   }
 
-  constructor() {
+  constructor(private httpClient: HttpClient) {
     const storedData = localStorage.getItem('auth');
     if(storedData) {
       try {
@@ -23,6 +25,19 @@ export class AuthenticationService {
       }
     }
 
+  }
+
+  authenticate(email: string, password: string){
+    return this.httpClient.post('/api/1.0/auth', {
+      email, password
+    }).pipe(
+      tap(body => {
+        if(body) {
+          this.setLoggedInUser(body as User)
+        }
+        return body
+      })
+    )
   }
 
   setLoggedInUser(user: User) {
@@ -41,5 +56,6 @@ export class AuthenticationService {
       isLoggedIn: false
     }
     localStorage.removeItem('auth');
+    this.httpClient.post('/api/1.0/logout', {}).subscribe(() => {});
   }
 }
