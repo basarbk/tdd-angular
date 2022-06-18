@@ -1,12 +1,31 @@
 <nav class="navbar navbar-expand navbar-light bg-light shadow-sm">
   <div class="container">
     <a class="navbar-brand" routerLink="/" title="Home">
-      <img src="assets/hoaxify.png" width="60" alt="Hoaxify"/>
+      <img src="assets/hoaxify.png" width="60" alt="Hoaxify" />
       Hoaxify
     </a>
     <ul class="navbar-nav">
-      <a class="nav-link" routerLink="/signup" title="Sign Up">Sign Up</a>
-      <a class="nav-link" routerLink="/login" title="Login">Login</a>
+      <a
+        *ngIf="!authenticationService.loggedInUser.isLoggedIn"
+        class="nav-link"
+        routerLink="/signup"
+        title="Sign Up"
+        >Sign Up</a
+      >
+      <a
+        *ngIf="!authenticationService.loggedInUser.isLoggedIn"
+        class="nav-link"
+        routerLink="/login"
+        title="Login"
+        >Login</a
+      >
+      <a
+      *ngIf="authenticationService.loggedInUser.isLoggedIn"
+      class="nav-link"
+      [routerLink]="'/user/'+authenticationService.loggedInUser.id"
+      title="My Profile"
+      >My Profile</a
+    >
     </ul>
   </div>
 </nav>

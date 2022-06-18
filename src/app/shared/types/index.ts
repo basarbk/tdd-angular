@@ -10,3 +10,5 @@ export type UserPage = {
   size: number,
   totalPages: number
 }
+
+export type LoggedInUser = User & { isLoggedIn: boolean}
