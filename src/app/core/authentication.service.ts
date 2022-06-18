@@ -32,4 +32,14 @@ export class AuthenticationService {
     }
     localStorage.setItem('auth', JSON.stringify(this.loggedInUser))
   }
+
+  logout(){
+    this.loggedInUser = {
+      id: 0,
+      username: '',
+      email: '',
+      isLoggedIn: false
+    }
+    localStorage.removeItem('auth');
+  }
 }
