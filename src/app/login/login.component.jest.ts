@@ -73,12 +73,14 @@ describe('LoginComponent', () => {
   });
   describe('Interactions', () => {
     let button: any;
+    let emailInput : HTMLInputElement;
+    let passwordInput : HTMLInputElement;
     const setupForm = async (values?: {email: string}) => {
       await setup();
-      const email = screen.getByLabelText('E-mail');
-      const password = screen.getByLabelText('Password');
-      await userEvent.type(email, values?.email || 'user1@mail.com');
-      await userEvent.type(password, 'P4ssword');
+      emailInput = screen.getByLabelText('E-mail');
+      passwordInput = screen.getByLabelText('Password');
+      await userEvent.type(emailInput, values?.email || 'user1@mail.com');
+      await userEvent.type(passwordInput, 'P4ssword');
       button = screen.getByRole('button', { name: 'Login' });
     };
     it('enables the button when all the fields have valid input', async () => {
@@ -131,6 +133,25 @@ describe('LoginComponent', () => {
       await setupForm({email: 'a'});
       expect(button).toBeDisabled();
     })
+
+    it('clears authentication fail message when email field is changed', async () => {
+      await setupForm({email: 'failing-user@mail.com'});
+      await userEvent.click(button);
+      const errorMessage = await screen.findByText(
+        'Incorrect Credentials'
+      );
+      await userEvent.type(emailInput, 'new@mail.com')
+      expect(errorMessage).not.toBeInTheDocument();
+    });
+    it('clears authentication fail message when password field is changed', async () => {
+      await setupForm({email: 'failing-user@mail.com'});
+      await userEvent.click(button);
+      const errorMessage = await screen.findByText(
+        'Incorrect Credentials'
+      );
+      await userEvent.type(passwordInput, 'P4ssword2')
+      expect(errorMessage).not.toBeInTheDocument();
+    });
   });
   describe('Validation', () => {
     it.each`
