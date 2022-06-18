@@ -1,6 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { render, screen } from '@testing-library/angular';
+import { render, screen, waitForElementToBeRemoved } from '@testing-library/angular';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { routes } from './router/app-router.module';
@@ -14,6 +14,7 @@ import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 import { UserListComponent } from './home/user-list/user-list.component';
 import { UserListItemComponent } from './home/user-list-item/user-list-item.component';
+import { ProfileCardComponent } from './user/profile-card/profile-card.component';
 
 const server = setupServer(
   rest.post('/api/1.0/users/token/:token', (req, res, ctx) => {
@@ -59,7 +60,8 @@ const setup = async (path: string) => {
       LoginComponent,
       ActivateComponent,
       UserListComponent,
-      UserListItemComponent
+      UserListItemComponent,
+      ProfileCardComponent
     ],
     imports: [HttpClientModule, SharedModule, ReactiveFormsModule, FormsModule],
     routes: routes,
@@ -121,14 +123,10 @@ describe('Routing', () => {
 
 describe('Login', () => {
   let button: any;
-  let emailInput : HTMLInputElement;
-  let passwordInput : HTMLInputElement;
-  const setupForm = async (values?: {email: string}) => {
+  const setupForm = async () => {
     await setup('/login');
-    emailInput = screen.getByLabelText('E-mail');
-    passwordInput = screen.getByLabelText('Password');
-    await userEvent.type(emailInput, values?.email || 'user1@mail.com');
-    await userEvent.type(passwordInput, 'P4ssword');
+    await userEvent.type(screen.getByLabelText('E-mail'), 'user1@mail.com');
+    await userEvent.type(screen.getByLabelText('Password'), 'P4ssword');
     button = screen.getByRole('button', { name: 'Login' });
   };
   it('redirects to home page after successful login', async () => {
@@ -136,5 +134,32 @@ describe('Login', () => {
     await userEvent.click(button);
     const homePage = await screen.findByTestId('home-page');
     expect(homePage).toBeInTheDocument();
+  })
+  it('hides Login and Sign Up from nav bar after successful login', async () => {
+    await setupForm();
+    const loginLink = screen.getByRole('link', { name: 'Login'});
+    const signUpLink = screen.getByRole('link', { name: 'Login'});
+    await userEvent.click(button);
+    await waitForElementToBeRemoved(loginLink);
+    expect(signUpLink).not.toBeInTheDocument();
+  })
+
+  it('displays My Profile link on nav bar after successful login', async () => {
+    await setupForm();
+    expect(screen.queryByRole('link', { name: 'My Profile'})).not.toBeInTheDocument();
+    await userEvent.click(button);
+    const myProfileLink = await screen.findByRole('link', { name: 'My Profile'})
+    expect(myProfileLink).toBeInTheDocument();
+  })
+
+  it('displays User Page with logged in user id in url after clicking My Profile link on nav bar', async () => {
+    await setupForm();
+    await userEvent.click(button);
+    const myProfileLink = await screen.findByRole('link', { name: 'My Profile'})
+    await userEvent.click(myProfileLink);
+    await screen.findByTestId('user-page');
+    const header = await screen.findByRole('heading', { name: 'user1'});
+    expect(header).toBeInTheDocument();
+
   })
 })
