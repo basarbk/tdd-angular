@@ -17,6 +17,7 @@ import { UserListItemComponent } from './home/user-list-item/user-list-item.comp
 import { ProfileCardComponent } from './user/profile-card/profile-card.component';
 import { LoggedInUser } from './shared/types';
 
+let logoutCounter = 0;
 const server = setupServer(
   rest.post('/api/1.0/users/token/:token', (req, res, ctx) => {
     return res(ctx.status(200))
@@ -41,10 +42,15 @@ const server = setupServer(
   }),
   rest.post('/api/1.0/auth', (req, res, ctx) => {
     return res(ctx.status(200), ctx.json({ id: 1, username: "user1"}))
+  }),
+  rest.post('/api/1.0/logout', (req, res, ctx) => {
+    logoutCounter += 1;
+    return res(ctx.status(200));
   })
 );
 
 beforeEach(() => {
+  logoutCounter = 0;
   server.resetHandlers();
 });
 
@@ -155,6 +161,14 @@ describe('Login', () => {
     expect(myProfileLink).toBeInTheDocument();
   })
 
+  it('displays Logout link on nav bar after successful login', async () => {
+    await setupForm();
+    expect(screen.queryByText('Logout')).not.toBeInTheDocument();
+    await userEvent.click(button);
+    const logoutLink = await screen.findByText('Logout')
+    expect(logoutLink).toBeInTheDocument();
+  })
+
   it('displays User Page with logged in user id in url after clicking My Profile link on nav bar', async () => {
     await setupForm();
     await userEvent.click(button);
@@ -178,6 +192,36 @@ describe('Login', () => {
     await setup('/');
     const myProfileLink = await screen.findByRole('link', { name: 'My Profile'})
     expect(myProfileLink).toBeInTheDocument();
+  })
+
+  it('displays Login and Sign Up after clicking Logout', async () => {
+    await setupForm();
+    await userEvent.click(button);
+    const logoutLink = await screen.findByText('Logout')
+    await userEvent.click(logoutLink);
+    const loginLink = await screen.findByRole('link', { name: 'Login'})
+    expect(loginLink).toBeInTheDocument();
+    const signUpLink = await screen.findByRole('link', { name: 'Sign Up'})
+    expect(signUpLink).toBeInTheDocument();
+  })
+
+  it('clears storage after user logs out', async () => {
+    await setupForm();
+    await userEvent.click(button);
+    const logoutLink = await screen.findByText('Logout')
+    await userEvent.click(logoutLink);
+    await screen.findByRole('link', { name: 'Login'})
+    const state = localStorage.getItem('auth');
+    expect(state).toBeNull();
+  })
+
+  it('sends logout request to backend', async () => {
+    await setupForm();
+    await userEvent.click(button);
+    const logoutLink = await screen.findByText('Logout')
+    await userEvent.click(logoutLink);
+    await screen.findByRole('link', { name: 'Login'})
+    expect(logoutCounter).toBe(1);
   })
 
 })
